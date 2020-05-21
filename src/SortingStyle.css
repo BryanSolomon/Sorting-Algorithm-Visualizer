@@ -1,5 +1,5 @@
 .bar {
-    width: 4px;
+    width: 10px;
     background-color: #3feee6 ;
     margin: 1px;
     display: inline-block;
@@ -29,4 +29,11 @@
 button {
     margin-top: 17px;
     margin-left: 3px
+}
+
+.logoContainer {
+    display: flex;
+    justify-content: left;
+    color: white;
+    margin: 0px;
 }
