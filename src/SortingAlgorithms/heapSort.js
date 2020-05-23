@@ -29,7 +29,7 @@ const heapify = (arr, n, i, animation) => {
         largest = r
     }
 
-    if (largest != i) {
+    if (largest !== i) {
         const swap = arr[i]
         arr[i] = arr[largest]
         arr[largest] = swap
