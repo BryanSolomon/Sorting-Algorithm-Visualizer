@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
 import "./SortingStyle.css"
+import { bubbleSortAnimation } from "./SortingAlgorithms/bubbleSort"
+import { quickSortAnimation } from './SortingAlgorithms/quickSort'
+import { heapSortAnimation } from "./SortingAlgorithms/heapSort"
+
+const SPEED = 5
 
 class SortingArray extends Component {
     constructor(props) {
@@ -17,11 +22,8 @@ class SortingArray extends Component {
     }
 
     generateArray() {
-        if (this.state.inProgress === true) {
-            return
-        }
         const arr = [];
-        for (let i = 0; i < 100; ++i) {
+        for (let i = 0; i < 150; ++i) {
             arr.push(randomNumber(5, 590))
         }
         this.setState({
@@ -30,75 +32,134 @@ class SortingArray extends Component {
         })
     }
 
-    bubbleSort() {
+    animateBubbleSort() {
+        if (this.state.sorted === true) {
+            return
+        } else {
+            let animation = bubbleSortAnimation(this.state.array);
+            console.log(animation)
+            for (let i = 0; i < animation.length; ++i) {
+                const bars = document.getElementsByClassName('bar')
+                const [index1, index2, swap] = animation[i]
+                const index1Style = bars[index1].style
+                const index2Style = bars[index2].style
+                if (swap) {
+                    setTimeout(() => {
+                        let temp = index1Style.height
+                        index1Style.height = index2Style.height
+                        index2Style.height = temp
+                    }, i * SPEED);
+                }
+                setTimeout(() => {
+                    index1Style.backgroundColor = "red"
+                    index2Style.backgroundColor = "red"
+                }, i * SPEED);
+                setTimeout(() => {
+                    index1Style.backgroundColor = "turquoise"
+                    index2Style.backgroundColor = "turquoise"
+                }, i * SPEED + 8);
+            }
+            setTimeout(() => {
+                this.setState({
+                    sorted: true,
+                    array: this.state.array.sort((a, b) => a - b)
+                })
+            }, animation.length * SPEED);
+        }
+    }
+
+    animateQuickSort(arr, start, end) {
         if (this.state.sorted === true) {
             return
         }
-        this.setState({ inProgress: true })
-        var arr = this.state.array
-        var n = this.state.array.length;
-        for (let i = 0; i < n - 1; i++) {
+        let animation = []
+        animation = quickSortAnimation(arr, start, end, animation)
+        console.log(animation)
+        for (let i = 0; i < animation.length; ++i) {
+            const bars = document.getElementsByClassName('bar')
+            const [index1, index2, swap] = animation[i]
+            const index1Style = bars[index1].style
+            const index2Style = bars[index2].style
+            if (swap) {
+                setTimeout(() => {
+                    let temp = index1Style.height
+                    index1Style.height = index2Style.height
+                    index2Style.height = temp
+                }, i * SPEED);
+            }
             setTimeout(() => {
-                for (let j = 0; j < n - i - 1; j++) {
-                    setTimeout(() => {
-                        if (arr[j] > arr[j + 1]) {
-                            const temp = arr[j];
-                            arr[j] = arr[j + 1];
-                            arr[j + 1] = temp;
-                        }
-                        this.setState({ array: arr })
-                    }, 1);
-                }
-            }, 1);
+                index1Style.backgroundColor = "red"
+                index2Style.backgroundColor = "red"
+            }, i * SPEED);
+            setTimeout(() => {
+                index1Style.backgroundColor = "turquoise"
+                index2Style.backgroundColor = "turquoise"
+            }, i * SPEED + 8);
         }
-        this.setState({
-            sorted: true,
-            inProgress: false
-        })
+        setTimeout(() => {
+            this.setState({
+                sorted: true,
+                array: this.state.array.sort((a, b) => a - b)
+            })
+        }, animation.length * SPEED);
     }
 
-    quickSort(arr, start, end) {
-        if (start < end) {
-            var pi = partition(arr, start, end);
-
-            this.quickSort(arr, start, pi - 1);
-            this.quickSort(arr, pi + 1, end);
+    animateHeapSort(arr) {
+        if (this.state.sorted === true) {
+            return
         }
-        this.setState({
-            array: arr,
-            sorted: true
-        })
-    }
-
-    testSort() {
-        var arr = this.state.array
-        arr.sort((a, b) => a - b)
-        this.setState({
-            array: arr,
-            sorted: true
-        })
+        let animation = []
+        animation = heapSortAnimation(arr, animation)
+        // console.log(animation)
+        for (let i = 0; i < animation.length; ++i) {
+            const bars = document.getElementsByClassName('bar')
+            const [index1, index2, swap] = animation[i]
+            const index1Style = bars[index1].style
+            const index2Style = bars[index2].style
+            if (swap) {
+                setTimeout(() => {
+                    let temp = index1Style.height
+                    index1Style.height = index2Style.height
+                    index2Style.height = temp
+                }, i * SPEED);
+            }
+            setTimeout(() => {
+                index1Style.backgroundColor = "red"
+                index2Style.backgroundColor = "red"
+            }, i * SPEED);
+            setTimeout(() => {
+                index1Style.backgroundColor = "turquoise"
+                index2Style.backgroundColor = "turquoise"
+            }, i * SPEED + 8);
+        }
+        setTimeout(() => {
+            this.setState({
+                sorted: true,
+                // array: this.state.array.sort((a, b) => a - b)
+            })
+        }, animation.length * SPEED);
     }
 
     render() {
         return (
             <div>
-                <div className="header">
-                    <div className="btns">
-                        <button onClick={() => this.generateArray()}>Generate New Array</button>
-                        <button onClick={() => this.testSort()}>Standard Sorting Method</button>
-                        <button onClick={() => this.bubbleSort()}>Bubble Sort</button>
-                        <button onClick={() => this.quickSort(this.state.array, 0, this.state.array.length - 1)}>Quick sort</button>
-                    </div>
-                    <div className="logoContainer">
-                        <span className="logo">Sorting Algorithm Visualizer</span>
-                    </div>
-                </div>
+                <nav className="header">
+                    <span className="logo">Sorting Algorithm Visualizer</span>
+                    <ul className="btns">
+                        <li><button className="newArrBtn" onClick={() => this.generateArray()}>Generate New Array</button></li>
+                        <li><button onClick={() => this.animateBubbleSort()}>Bubble Sort</button></li>
+                        <li><button onClick={() => this.animateQuickSort(this.state.array, 0, this.state.array.length - 1)}>Quick sort</button></li>
+                        <li><button onClick={() => this.animateHeapSort(this.state.array)}>Heap Sort</button></li>
+                        {/* <li><button onClick={() => this.mergeSortAnimation()}>Merge Sort</button></li> */}
+                    </ul>
+                </nav>
                 <div className="container">
-                    {this.state.array.map((i, key) => <div
-                        className="bar"
-                        key={key}
-                        style={{ height: `${i}px` }}
-                    />)}
+                    {this.state.array.map((i, key) =>
+                        <div
+                            className="bar"
+                            key={key}
+                            style={{ height: `${i}px` }}
+                        />)}
                 </div>
             </div>
         );
@@ -107,42 +168,6 @@ class SortingArray extends Component {
 
 const randomNumber = (min, max) => {
     return Math.floor(Math.random() * (max - min) + min)
-}
-
-const swap = (arr, i, j) => {
-    const temp = arr[i]
-    arr[i] = arr[j]
-    arr[j] = temp
-}
-
-const partition = (arr, start, end) => {
-    const pivot = arr[end];
-    var i = (start - 1);
-
-    for (let j = start; j < end; j++) {
-        if (arr[j] <= pivot) {
-            i++;
-
-            const swapTemp = arr[i];
-            arr[i] = arr[j];
-            arr[j] = swapTemp;
-        }
-    }
-
-    const swapTemp = arr[i + 1];
-    arr[i + 1] = arr[end];
-    arr[end] = swapTemp;
-
-    return i + 1;
-}
-
-const loopWithCallback = (callback, i, limit) => {
-    if (i > limit) return
-
-    setTimeout(() => {
-        callback(loopWithCallback(callback, i + 1, limit))
-    }, 100)
-
 }
 
 export default SortingArray;
