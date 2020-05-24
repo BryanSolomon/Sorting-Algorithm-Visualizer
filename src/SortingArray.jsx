@@ -6,8 +6,14 @@ import { heapSortAnimation } from "./SortingAlgorithms/heapSort"
 import { selectionSortAnimation } from './SortingAlgorithms/selectionSort'
 import { insertionSortAnimation } from './SortingAlgorithms/insertionSort'
 import { mergeSortAnimation } from './SortingAlgorithms/mergeSort'
-
-const SPEED = 6
+/**
+ * Project: Sorting Algorithm visualizer
+ * Author: Bryan Solomon
+ * 
+ * This webapp simulates different sorting algorithms in
+ * using randomly generates arrays
+ */
+const SPEED = 5 //animation speed in miliseconds 
 var inProgress = false
 
 class SortingArray extends Component {
@@ -24,6 +30,9 @@ class SortingArray extends Component {
         this.generateArray()
     }
 
+    /** 
+     * Generates random values and pushes them into array
+     */
     generateArray() {
         if (inProgress) {
             return
@@ -37,7 +46,11 @@ class SortingArray extends Component {
             sorted: false
         })
     }
-
+    /** 
+     * An animation array is filled with indexes and a boolean swap of that the algorithm(s) 
+     * go through to sort array. If swap is true, the array heights at those index are swapped. 
+     * Otherwise they will still be colored red to indecate being compared, but won't be swapped
+     */
     animateSortingAlgorithm(algorithm) {
         if (this.state.sorted === true) {
             return
@@ -92,11 +105,22 @@ class SortingArray extends Component {
         }, animation.length * SPEED);
     }
 
-    animateMergeSort() {
+    /** 
+     * Merge sort and insertion sort do not swap values, so the animation process is different. 
+     * The animation array will contain index and new height, and this function will override 
+     * the height at those indexes with the new height
+     */
+    animationOtherAlgorithms(algorithm) {
         if (this.state.sorted === true) {
             return
         }
-        const animation = mergeSortAnimation(this.state.array)
+        let animation = []
+        if (algorithm === "merge") {
+            animation = mergeSortAnimation(this.state.array, animation)
+        } else if (algorithm === "insertion") {
+            animation = insertionSortAnimation(this.state.array, animation)
+        }
+        console.log(animation)
         for (let i = 0; i < animation.length - 1; ++i) {
             const bars = document.getElementsByClassName('bar')
             const [index, newHeight] = animation[i]
@@ -128,9 +152,9 @@ class SortingArray extends Component {
                         <li><button onClick={() => inProgress ? null : this.animateSortingAlgorithm("bubble")}>Bubble Sort</button></li>
                         <li><button onClick={() => inProgress ? null : this.animateSortingAlgorithm("quick")}>Quick sort</button></li>
                         <li><button onClick={() => inProgress ? null : this.animateSortingAlgorithm("heap")}>Heap Sort</button></li>
-                        <li><button onClick={() => inProgress ? null : this.animateMergeSort()}>Merge Sort</button></li>
+                        <li><button onClick={() => inProgress ? null : this.animationOtherAlgorithms("merge")}>Merge Sort</button></li>
                         <li><button onClick={() => inProgress ? null : this.animateSortingAlgorithm("selection")}>Selection Sort</button></li>
-                        <li><button onClick={() => inProgress ? null : this.animateSortingAlgorithm("insertion")}>Insertion Sort</button></li>
+                        <li><button onClick={() => inProgress ? null : this.animationOtherAlgorithms("insertion")}>Insertion Sort</button></li>
                     </ul>
                 </nav>
                 <div className="container">
@@ -146,6 +170,9 @@ class SortingArray extends Component {
     }
 }
 
+/**
+ * Sorting algorithm to generate number within a specified range
+ */
 const randomNumber = (min, max) => {
     return Math.floor(Math.random() * (max - min) + min)
 }

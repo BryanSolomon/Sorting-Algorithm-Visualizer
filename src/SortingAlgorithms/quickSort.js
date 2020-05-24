@@ -8,23 +8,19 @@ export const quickSortAnimation = (arr, start, end, animation) => {
     return animation
 }
 
-// const quickSortAnimation = (arr,start,end,aimation) {
-
-// }
-
 const partition = (arr, start, end, animation) => {
     const pivot = arr[end];
     var pi = start
     for (let i = start; i < end; ++i) {
         if (arr[i] <= pivot) {
-            animation.push([i, pi, true])
+            animation.push([i, pi, true])//these indexes will be swapped
             swap(arr, i, pi)
             pi++
         } else {
-            animation.push([i, pi, false])
+            animation.push([i, pi, false])//these indexes will still be compared but not swapped
         }
     }
-    animation.push([pi, end, true])
+    animation.push([pi, end, true])//these indexes will be swapped
     swap(arr, pi, end)
     return pi
 }

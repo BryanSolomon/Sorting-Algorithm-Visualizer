@@ -1,5 +1,4 @@
-export const mergeSortAnimation = (arr) => {
-    const animation = []
+export const mergeSortAnimation = (arr, animation) => {
     if (arr.length < 2) {
         return arr
     }
@@ -8,7 +7,6 @@ export const mergeSortAnimation = (arr) => {
 }
 
 const mergeSort = (arr, l, r, animation) => {
-    // console.log(animation)
     if (l === r) {
         return
     }
@@ -18,6 +16,9 @@ const mergeSort = (arr, l, r, animation) => {
     merge(arr, l, m, r, animation)
 }
 
+/*
+ * pushes index and new height into array intead of indexes to be swapped
+ */
 const merge = (arr, l, m, r, animation) => {
     const n1 = m - l + 1
     const n2 = r - m

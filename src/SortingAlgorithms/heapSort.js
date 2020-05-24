@@ -1,5 +1,4 @@
 export const heapSortAnimation = (arr, animation) => {
-    // console.log(animation)
     const n = arr.length
     for (let i = n / 2 - 1; i >= 0; --i) {
         animation = heapify(arr, n, i, animation)
@@ -11,13 +10,11 @@ export const heapSortAnimation = (arr, animation) => {
         animation.push([0, i, true])
         animation = heapify(arr, i, 0, animation)
     }
-    // console.log(animation)
     return animation
 }
 
 const heapify = (arr, n, i, animation) => {
-    // console.log(animation)
-    var largest = i
+    let largest = i
     const l = 2 * i + 1
     const r = 2 * i + 2
 
@@ -33,10 +30,10 @@ const heapify = (arr, n, i, animation) => {
         const swap = arr[i]
         arr[i] = arr[largest]
         arr[largest] = swap
-        animation.push([i, largest, true])
+        animation.push([i, largest, true])//these indexes will be swapped
         animation = heapify(arr, n, largest, animation)
     } else {
-        animation.push([i, largest, false])
+        animation.push([i, largest, false])//these indexes will still be compared but not swapped
     }
     return animation
 }

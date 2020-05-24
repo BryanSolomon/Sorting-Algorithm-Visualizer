@@ -2,6 +2,8 @@
 
 * {
     box-sizing: border-box;
+    font-family: 'Muli', sans-serif;
+    font-weight: 600;
     margin: 0;
     padding: 0;
     background-color: #0b0c10;
@@ -40,8 +42,6 @@
 }
 
 button {
-    font-family: 'Muli', sans-serif;
-    font-weight: 600;
     display: inline-block;
     justify-content: space-around;
     padding: 4px 8px;
@@ -69,7 +69,5 @@ button:hover {
 
 .logo {
    color: white;
-   font-family: 'Muli', sans-serif;
-   font-weight: 600;
    font-size: 30px;
 }
