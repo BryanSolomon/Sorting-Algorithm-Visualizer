@@ -8,3 +8,6 @@ Run command
 ```console
 npm start
 ```
+
+### *Bugs*
+*If another sorting button is pushed while sorting is in progress, red markers indicating a new sorting process show at the indexes of the array that would have been sorted. However, it does not actually sort array again.*
