@@ -10,7 +10,7 @@
 }
 
 .bar {
-    width: 8px;
+    width: .5vw;
     background-color: turquoise ;
     margin: 1px;
     display: inline-block;
@@ -20,7 +20,7 @@
 }
 
 .container {
-    margin-top: 35px;
+    margin: 5vh 0;
     text-align: center;
 }
 
@@ -45,6 +45,7 @@ button {
     display: inline-block;
     justify-content: space-around;
     padding: 4px 8px;
+    margin: 2px 0;
     border: none;
     border-radius: 50px;
     border: 1px solid turquoise;

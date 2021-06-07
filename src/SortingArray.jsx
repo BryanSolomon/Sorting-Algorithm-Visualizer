@@ -39,7 +39,7 @@ class SortingArray extends Component {
         }
         const arr = [];
         for (let i = 0; i < 140; ++i) {
-            arr.push(randomNumber(5, 590))
+            arr.push(randomNumber(5, 525))
         }
         this.setState({
             array: arr,
